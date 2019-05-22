@@ -46,12 +46,12 @@ class Tarea {
         this.fecha = fecha
     }
 
-    getChecklist(index) {
-        return this.checklist[index];
+    getChecklists() {
+        return this.checklist;
     }
 
-    setChecklist(titulo) {
-        this.checklist.push(new Checklist(titulo));
+    addChecklist(checklist) {
+        this.checklist.push();
     }
 
     getComentario(index) {
@@ -64,10 +64,18 @@ class Tarea {
 }
 
 class Checklist {
-    constructor(id, title) {
+    constructor(id) {
         this.id = id;
-        this.title = title;
+        this.title = '';
         this.items = [];
+    }
+
+    setTitulo(title) {
+        this.title = title;
+    }
+
+    getTitulo() {
+        return this.title;
     }
 
     addItem(item) {
@@ -95,6 +103,7 @@ class Comentario {
 //# Variables #
 let tareaPresionada;
 let listaPresionada;
+let checklistActual;
 
 //# Listas #
 const listaToDo = new Lista(1);
@@ -114,6 +123,10 @@ const newItemWaiting = document.getElementById('newItemWaiting');
 const newItemDone = document.getElementById('newItemDone');
 
 const tareaAbierta = document.getElementById('tareaAbierta');//Tarea abierta
+const btnChecklist = document.getElementById('btnChecklist');
+const btnFecha = document.getElementById('btnFecha');
+const btnEliminar = document.getElementById('btnEliminar');
+
 const btnCerrar = document.getElementById('btnCerrar'); //Boton cerrar de la tarea
 
 const tituloTareaActiva = document.getElementById('tituloTareaActiva');
@@ -143,12 +156,104 @@ tituloTareaActiva.onblur = function () {
     }
 }
 
+//Functiones tarea abierta
 descripcionTareaActiva.onblur = function () {
     tareaPresionada.setDescripcion(descripcionTareaActiva.value);
 }
 
 descripcionTareaActiva.onblur = function () {
     tareaPresionada.setDescripcion(descripcionTareaActiva.value);
+}
+
+//Botones tarea abierta
+btnChecklist.onclick = function () {
+    let checklist = new Checklist(new Date().getTime());
+    checklistActual = checklist;
+
+    let divChecklist = document.getElementById('divChecklist');
+    console.log(divChecklist);
+    let titleListadoChecklist;
+    if (divChecklist.childElementCount <= 0) {
+        titleListadoChecklist = crearP();
+        titleListadoChecklist.innerText = "Checklist";
+        divChecklist.appendChild(titleListadoChecklist);
+    }
+
+    let listadoChecklist = crearDiv();
+    listadoChecklist.id = 'listadoChecklist';
+
+    let checklistItem = crearDiv();
+    checklistItem.id = 'checklist' + divChecklist.childElementCount;
+    checklistItem.className = 'focus';
+
+    let cabeceraChecklist = crearDiv();
+    cabeceraChecklist.className = 'cabeceraChecklist';
+
+    let tituloChecklist = crearInput();
+    tituloChecklist.setAttribute('placeholder', 'Escribe título…');
+    tituloChecklist.addEventListener('keyup', event => {
+        if (event.keyCode === 13) {
+            comprobarTitulo(tituloChecklist);
+        }
+    })
+    tituloChecklist.addEventListener('blur', () => {
+        comprobarTitulo(tituloChecklist);
+    });
+
+    let btnBasura = document.createElement('i');
+    btnBasura.classList.add('fas', 'fa-trash');
+    btnBasura.addEventListener('click', () => {
+        borrarChecklist();
+    });
+
+    cabeceraChecklist.appendChild(tituloChecklist);
+    cabeceraChecklist.appendChild(btnBasura);
+
+    let addNewItem = crearDiv();
+    addNewItem.id = 'addNewItem';
+
+    let newItemIcon = document.createElement('i');
+    newItemIcon.classList.add('fas', 'fa-plus');
+
+    let newItemText = crearInput();
+    newItemText.setAttribute('type', 'text');
+    newItemText.setAttribute('placeholder', 'Escribe algo...');
+
+    addNewItem.appendChild(newItemIcon);
+    addNewItem.appendChild(newItemText);
+
+    checklistItem.appendChild(cabeceraChecklist);
+    checklistItem.appendChild(addNewItem);
+
+    listadoChecklist.appendChild(checklistItem);
+
+    divChecklist.appendChild(listadoChecklist);
+    tituloChecklist.focus();
+
+    function comprobarTitulo(tituloChecklist) {
+        if ((tituloChecklist.value === '') || (tituloChecklist.value === 'Escribe título…')) {
+            if (checklistActual.getTitulo() === '') {
+                borrarChecklist();
+            } else {
+                console.log(checklistActual.getTitulo() + " titulo");
+                tituloChecklist.value = checklistActual.getTitulo();
+            }
+        } else {
+            checklistActual.setTitulo(tituloChecklist.value);
+        }
+        console.log(checklistActual);
+    }
+
+    function borrarChecklist() {
+        listadoChecklist.removeChild(checklistItem);
+        divChecklist.removeChild(listadoChecklist);
+
+        if (divChecklist.childElementCount <= 1) {
+            if (titleListadoChecklist !== null) {
+                divChecklist.removeChild(titleListadoChecklist);
+            }
+        }
+    }
 }
 
 btnCerrar.onclick = function () {
@@ -157,7 +262,7 @@ btnCerrar.onclick = function () {
 }
 
 document.onclick = function (e) {
-    if ((e.target.id == 'listas') && (tareaAbierta.style.display === 'block')) {
+    if ((e.target.id === 'listas') && (tareaAbierta.style.display === 'block')) {
         refrescarDatos(listaPresionada, tareaPresionada);
         tareaAbierta.style.display = 'none';
     }
@@ -302,4 +407,12 @@ function crearArticle() {
 
 function crearH3() {
     return document.createElement('h3');
+}
+
+function crearP() {
+    return document.createElement('p');
+}
+
+function crearInput() {
+    return document.createElement('input');
 }

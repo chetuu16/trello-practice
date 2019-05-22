@@ -206,6 +206,7 @@ body>div:nth-child(2) {
 #opciones ul li:hover {
     background: #929292;
     transition: 0.5s;
+    user-select: none;
 }
 
 .itemChecklist {
@@ -228,6 +229,7 @@ body>div:nth-child(2) {
 
 #listadoChecklist>div>div:last-child {
     margin-left: 12px;
+    margin-top: 15px;
 }
 
 #listadoChecklist div:last-child input {
@@ -236,7 +238,6 @@ body>div:nth-child(2) {
     border: 0;
     padding: 2.5px;
     margin-left: 5px;
-    margin-bottom: 10px;
 }
 
 #listadoChecklist .cabeceraChecklist {
@@ -258,11 +259,14 @@ body>div:nth-child(2) {
     transition: 0.5s;
 }
 
-.cabeceraChecklist p {
+.cabeceraChecklist input {
+    width: 95%;
     white-space: nowrap;
     overflow: hidden;
+    min-width: 100px;
     text-overflow: ellipsis;
     font-size: 1.1em;
+    background: #eee !important;
 }
 
 .cabeceraChecklist {
@@ -272,9 +276,9 @@ body>div:nth-child(2) {
 .cabeceraChecklist::after {
     position: absolute;
     content: "";
-    width: 95%;
+    width: 100%;
     height: 2px;
-    top: 25px;
+    top: 30px;
     background: #454545;
 }
 
