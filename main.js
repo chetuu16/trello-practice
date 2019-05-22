@@ -152,7 +152,8 @@ descripcionTareaActiva.onblur = function () {
 }
 
 btnCerrar.onclick = function () {
-
+    refrescarDatos(listaPresionada, tareaPresionada);
+    tareaAbierta.style.display = 'none';
 }
 
 document.onclick = function (e) {
@@ -212,35 +213,61 @@ function nuevaTarea(objLista, lista, newBtn) {
     tituloTarea.focus();
 }
 
-function crearElementos(article, tarea) {
+function crearElementos(article, lista, tarea) {
     //Creamos el icono de la descripcion
+    crearElementoDescripcion(article, lista, tarea);
+}
+
+function crearElementoDescripcion(article, lista, tarea) {
+
+    let divDescripcion = crearDiv();
+    divDescripcion.id = 'description';
+
+    let imageDescripcion = document.createElement('i');
+    imageDescripcion.classList.add('fas');
+    imageDescripcion.classList.add('fa-bars');
+
+    let divAvisos = crearDiv();
+    divAvisos.className = 'avisosTareas';
+
     if (tarea.getDescripcion() !== '') {
+        //Tiene descripción
         if (article.querySelector('.avisosTareas') === null) {
+            //No tiene el elemento creado
 
-            if (article.querySelector('description') === null) {
+            article.appendChild(divAvisos);
+        }
 
-                let divAvisos = crearDiv();
-                divAvisos.className = 'avisosTareas';
-
-                let divDescripcion = crearDiv();
-                divDescripcion.id = 'description';
-
-                let imageDescripcion = document.createElement('i');
-                imageDescripcion.classList.add('fas');
-                imageDescripcion.classList.add('fa-bars');
-
-                divDescripcion.appendChild(imageDescripcion);
-                divAvisos.appendChild(divDescripcion);
-                article.appendChild(divAvisos);
-            }
+        if (article.querySelector('description') === null) {
+            //No tiene el elemento de descripción creado
+            divDescripcion.appendChild(imageDescripcion);
+            divAvisos.appendChild(divDescripcion);
         }
     } else {
-        let divAvisos = document.querySelector('.avisosTareas');
-        let divDescripcion = document.querySelector('#description');
-        if ((divDescripcion !== null) && (divAvisos !== null)) {
-            divAvisos.removeChild(divDescripcion);
-            if (divAvisos.childElementCount === 0) {
-                article.removeChild(divAvisos);
+        eliminarDivElementos(article);
+    }
+}
+
+function eliminarDivElementos(article) {
+    console.log(article);
+    if (article.childNodes[1] !== null) {
+        //Existe el div de elementos
+        let avisosDiv = article.childNodes[1];
+        console.log(avisosDiv, article.childNodes[1]);
+        if (avisosDiv !== undefined) {
+            //Controlamos si tenemos el bloque de descripción
+            let bloqueDescripcion = avisosDiv.childNodes[0];
+            if (bloqueDescripcion !== null) {
+                avisosDiv.removeChild(bloqueDescripcion);
+            }
+
+            //Controlamos si tenemos el bloque de checklist
+
+            //Controlamos si tenemos el bloque de fecha
+
+            //Controlamos si tenemos el bloque de comentarios
+            if (avisosDiv.childElementCount <= 0) {
+                article.removeChild(avisosDiv);
             }
         }
     }
@@ -261,7 +288,7 @@ function refrescarDatos(lista, tarea) {
     element.firstChild.firstChild.innerText = tarea.getTitulo();
     listaPresionada = null;
     tareaPresionada = null;
-    crearElementos(element, tarea);
+    crearElementos(element, lista, tarea);
 }
 
 //#### Funciones de creaciones ####
