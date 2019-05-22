@@ -1,0 +1,371 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #264e86;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #264e86;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-image: url('https://picsum.photos/1920/1080');
+    background-repeat: no-repeat;
+    transition: 0.5s;
+    min-width: 100% !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    user-select: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 75px;
+    background: #264e86;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #eff0f4;
+}
+
+body>div:nth-child(2) {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#listas {
+    max-width: 100%;
+    justify-content: space-between;
+    align-items: start;
+    display: flex;
+    overflow: auto;
+    height: 100%;
+}
+
+#tareaAbierta {
+    z-index: 5;
+    display: none;
+    position: absolute;
+    background: #eee;
+    border: 2px solid #454545;
+    border-radius: 10px;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    max-height: 600px;
+    max-width: 75%;
+    margin: 20px auto;
+}
+
+#tareaAbierta>i {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 8px;
+    transition: 0.5s;
+}
+
+#tareaAbierta>i:hover {
+    background: #454545;
+    border-radius: 50%;
+    color: #eee;
+    transition: 0.5s;
+}
+
+#tareaAbierta>p {
+    margin: 10px 30px;
+    font-size: 1.5em;
+}
+
+#cuerpoTarea {
+    margin: 10px 50px;
+    justify-content: space-between;
+    align-items: flex-start;
+    display: flex;
+}
+
+#contenido {
+    width: 100%;
+    height: 500px;
+    overflow: auto;
+}
+
+#contenido>div {
+    margin: 20px auto;
+}
+
+#divDescripcion {
+    /* Propiedades de la parte de la descripcion */
+}
+
+#divDescripcion>p:first-child, #divChecklist>p:first-child, #divComentarios>p:first-child {
+    font-size: 1.25em;
+}
+
+#divDescripcion>input {
+    border: none;
+    margin: 10px 10px 10px 0;
+    display: block;
+    border-radius: 5px;
+    padding: 5px;
+    width: 95%;
+    background: rgb(226, 226, 226);
+}
+
+#divChecklist {
+    /* Esto es el div general de los check lists */
+}
+
+#listadoChecklist {
+    margin-left: 10px;
+}
+
+#listadoChecklist div {
+    margin: 5px;
+}
+
+#divComentarios {}
+
+#divComentarios textarea {
+    width: 95%;
+    height: 100px !important;
+    resize: none;
+    background: rgb(226, 226, 226);
+    margin: 10px;
+    border-radius: 5px;
+    border: 0;
+    padding: 5px;
+}
+
+#comentariosEscritos {
+    width: 75%;
+}
+
+.comentario {
+    background: rgb(226, 226, 226);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+#infoComentario {
+    padding: 2px;
+    font-size: 0.6em;
+    color: #929292;
+}
+
+#comentarioText {
+    padding: 10px;
+}
+
+#opciones {
+    width: 300px;
+    padding-left: 20px;
+}
+
+#opciones ul {
+    list-style: none;
+    width: 100%;
+}
+
+#opciones ul li {
+    border-radius: 5px;
+    box-shadow: 0 2px 0 0 #454545;
+    background: rgb(226, 226, 226);
+    transition: 0.5s;
+    margin: 5px;
+    padding: 5px;
+}
+
+#opciones ul li:hover {
+    background: #929292;
+    transition: 0.5s;
+}
+
+.itemChecklist {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    width: 95%;
+}
+
+.itemChecklist i {
+    padding: 6px 8px;
+    transition: 0.5s;
+}
+
+.itemChecklist>i:hover {
+    color: #eee;
+    background: #454545;
+    border-radius: 50%;
+}
+
+#listadoChecklist div:last-child {
+    margin-left: 12px;
+}
+
+#listadoChecklist div:last-child input {
+    border-radius: 5px;
+    background: rgb(226, 226, 226);
+    border: 0;
+    width: 95%;
+    padding: 2.5px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+section {
+    width: 75%;
+    min-width: 350px;
+    max-width: 350px;
+    margin: 10px;
+    border-radius: 10px;
+    background: #eeeeeeaa;
+}
+
+.cabeceraLista {
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.cabeceraLista::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: #454545;
+    top: 35px;
+    left: 0;
+}
+
+.cabeceraLista h2 {
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+section div {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    margin: 10px;
+    user-select: none;
+}
+
+article {
+    position: relative;
+    justify-content: start;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #eeeeee70;
+    border-radius: 10px;
+    transition: 0.5s;
+    margin: 5px auto;
+}
+
+article:hover {
+    background: #eee;
+    transition: 0.5s;
+}
+
+.tituloTarea {
+    width: 100%;
+}
+
+.tituloTarea h3 {
+    text-align: start;
+    width: 100%;
+}
+
+.avisosTarea {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.newItem {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    transition: 0.5s;
+    width: 100%;
+}
+
+.newItem:hover {
+    background: #80808080;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+.newItem i {
+    padding: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+    #listas {
+        flex-wrap: wrap;
+        flex-flow: column;
+        align-items: center;
+    }
+    section {
+        margin-bottom: 25px;
+    }
+    #tareaAbierta {
+        position: absolute;
+        background: #eee;
+        border: 2px solid #454545;
+        border-radius: 10px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 100%;
+        margin: 0;
+    }
+    #cuerpoTarea {
+        flex-direction: column;
+        height: 500px;
+        overflow: auto;
+    }
+    #contenido {
+        height: auto;
+        overflow: unset;
+    }
+    #comentariosEscritos {
+        width: 100%;
+    }
+}
