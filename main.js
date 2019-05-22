@@ -1,7 +1,8 @@
 //# CLASES #
 
 class Lista {
-    constructor() {
+    constructor(id) {
+        this.id = id;
         this.tareas = [];
     }
     getTareas() {
@@ -93,12 +94,13 @@ class Comentario {
 
 //# Variables #
 let tareaPresionada;
+let listaPresionada;
 
 //# Listas #
-const listaToDo = new Lista();
-const listaDoing = new Lista();
-const listaWaiting = new Lista();
-const listaDone = new Lista();
+const listaToDo = new Lista(1);
+const listaDoing = new Lista(2);
+const listaWaiting = new Lista(3);
+const listaDone = new Lista(4);
 
 //# Botones #
 const todoList = document.getElementById('todoList');
@@ -134,28 +136,40 @@ newItemDone.onclick = function () {
     nuevaTarea(listaDone, doneList, newItemDone);
 }
 
+//------ Tarea Abierta ----------------
+tituloTareaActiva.onblur = function () {
+    if (tituloTareaActiva.innerText !== '') {
+        tareaPresionada.setTitulo(tituloTareaActiva.innerText);
+    }
+}
+
+descripcionTareaActiva.onblur = function () {
+    tareaPresionada.setDescripcion(descripcionTareaActiva.value);
+}
+
+descripcionTareaActiva.onblur = function () {
+    tareaPresionada.setDescripcion(descripcionTareaActiva.value);
+}
+
 btnCerrar.onclick = function () {
-    refrescarDatos();
-    tareaAbierta.style.display = 'none';
+
 }
 
 document.onclick = function (e) {
-    if (e.target.id == 'listas') {
-        refrescarDatos();
+    if ((e.target.id == 'listas') && (tareaAbierta.style.display === 'block')) {
+        refrescarDatos(listaPresionada, tareaPresionada);
         tareaAbierta.style.display = 'none';
     }
 };
 
 //########## Funciones generales  ###################\\
 function nuevaTarea(objLista, lista, newBtn) {
-    console.log(lista.childElementCount);
     //Creamos la tarea
     let tarea = new Tarea(lista.childElementCount - 1);
-    console.log('Tarea creada: ' + tarea);
 
     //Creamos el articulo
     let article = crearArticle();
-    article.id = 'tarea' + tarea.id;
+    article.id = 'tarea' + tarea.id + '_on' + objLista.id;
 
     let divTitulo = crearDiv();
     divTitulo.className = 'tituloTarea';
@@ -165,14 +179,11 @@ function nuevaTarea(objLista, lista, newBtn) {
 
     //Controladores
     article.addEventListener('click', () => {
-        //Item que pulsamos: tarea.id
-        //Lista en la que estamos: objLista
-        console.log(objLista);
         if (tarea.getTitulo() !== '') {
-            console.log(objLista.getTareas()[tarea.id]);
             rellenarDatos(objLista.getTareas()[tarea.id]);
+            tareaPresionada = objLista.getTareas()[tarea.id];
+            listaPresionada = objLista;
             tareaAbierta.style.display = "block";
-            tareaAbierta.focus();
         }
     });
 
@@ -226,40 +237,31 @@ function crearElementos(article, tarea) {
     } else {
         let divAvisos = document.querySelector('.avisosTareas');
         let divDescripcion = document.querySelector('#description');
-        console.log(divDescripcion === null);
-        console.log(divDescripcion);
-        console.log(divAvisos === null);
-        console.log(divAvisos);
-        if ((divDescripcion !== null) || (divAvisos !== null)) {
+        if ((divDescripcion !== null) && (divAvisos !== null)) {
             divAvisos.removeChild(divDescripcion);
+            if (divAvisos.childElementCount === 0) {
+                article.removeChild(divAvisos);
+            }
         }
-    }
-
-    if (true) {
-
     }
 }
 
 function rellenarDatos(tarea) {
     tituloTareaActiva.innerText = tarea.getTitulo();
-    tituloTareaActiva.addEventListener('blur', () => {
-        if (tituloTareaActiva.innerText !== '') {
-            tarea.setTitulo(tituloTareaActiva.innerText);
-        }
-    });
 
-    descripcionTareaActiva.innerText = tarea.getDescripcion();
-    descripcionTareaActiva.addEventListener('blur', () => {
-        tarea.setDescripcion(descripcionTareaActiva.value);
-    });
+    descripcionTareaActiva.value = tarea.getDescripcion();
+
 }
 
-function refrescarDatos() {
-    for (let tarea of listaToDo.getTareas()) {
-        let element = document.getElementById('tarea' + tarea.id);
-        element.firstChild.firstChild.innerText = tarea.getTitulo();
-        crearElementos(element, tarea);
-    }
+function refrescarDatos(lista, tarea) {
+
+    console.log(lista, tarea);
+    let element = document.getElementById('tarea' + tarea.id + '_on' + lista.id);
+    console.log(element);
+    element.firstChild.firstChild.innerText = tarea.getTitulo();
+    listaPresionada = null;
+    tareaPresionada = null;
+    crearElementos(element, tarea);
 }
 
 //#### Funciones de creaciones ####
