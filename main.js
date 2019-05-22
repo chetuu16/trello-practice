@@ -184,7 +184,7 @@ btnChecklist.onclick = function () {
 
     let checklistItem = crearDiv();
     checklistItem.id = 'checklist' + divChecklist.childElementCount;
-    checklistItem.className = 'focus';
+    checklistItem.classList.add('focus', 'checklistIndividual');
 
     let cabeceraChecklist = crearDiv();
     cabeceraChecklist.className = 'cabeceraChecklist';
@@ -218,6 +218,27 @@ btnChecklist.onclick = function () {
     let newItemText = crearInput();
     newItemText.setAttribute('type', 'text');
     newItemText.setAttribute('placeholder', 'Escribe algo...');
+    newItemText.addEventListener('blur', () => {
+        let itemChecklist = crearDiv();
+        itemChecklist.className = 'itemChecklist';
+
+        let divCuerpoItemChecklist = crearDiv();
+
+        let itemCheckbox = crearInput();
+        itemCheckbox.setAttribute('type', 'checkbox');
+
+        let textoCheckbox = document.createElement('label');
+        textoCheckbox.setAttribute('contenteditable', 'true');
+        textoCheckbox.innerText = newItemText.value;
+
+        divCuerpoItemChecklist.appendChild(itemCheckbox);
+        divCuerpoItemChecklist.appendChild(textoCheckbox);
+
+        itemChecklist.appendChild(divCuerpoItemChecklist);
+
+        checklistItem.insertBefore(itemChecklist, addNewItem);
+        newItemText.value = '';
+    })
 
     addNewItem.appendChild(newItemIcon);
     addNewItem.appendChild(newItemText);
@@ -393,6 +414,7 @@ function refrescarDatos(lista, tarea) {
     element.firstChild.firstChild.innerText = tarea.getTitulo();
     listaPresionada = null;
     tareaPresionada = null;
+    checklistActual = null;
     crearElementos(element, lista, tarea);
 }
 
